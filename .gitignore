@@ -1,0 +1,75 @@
+# Gitignore Unity3D
+# YerkoAndrei
+
+# Proyecto local Unity3D
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+[Uu]ser[Ss]ettings/
+
+# Metas de archivos ignorados
+!/[Aa]ssets/**/*.meta
+
+# Metas de Unity3D
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Cache de Gradle
+.gradle/
+
+# Cache Visual Studio 
+.vs/
+.suo/
+.vsconfig*
+
+# Generados por Visual Studio
+ExportedObj/
+.consulo/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Compilaciones
+*.unitypackage
+*.apk
+*.aab
+*.app
+*.exe
+
+# Registros e informe de errores de Unity3D
+crashlytics-build.properties
+sysinfo.txt
+*.log
+
+# Generados por Sistemas Operativos
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Krita
+*.png~
+
+# Blender
+*.blend1
