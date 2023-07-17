@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using static Constantes;
 
 public class SistemaAnimacion : MonoBehaviour
@@ -36,6 +37,11 @@ public class SistemaAnimacion : MonoBehaviour
     public static void AnimarColor(Image elemento, float duraciónLerp, Color colorInicio, Color colorFinal, Action alFinal)
     {
         instancia.StartCoroutine(AnimaciónColor(elemento, duraciónLerp, colorInicio, colorFinal, alFinal));
+    }
+
+    public static void AnimarNúmeros(TMP_Text texto, int númeroInicio, int númeroFinal, Action alFinal)
+    {
+        instancia.StartCoroutine(AnimaciónNúmeros(texto, númeroInicio, númeroFinal, alFinal));
     }
 
     // Intercalación lineal sin curva
@@ -108,6 +114,28 @@ public class SistemaAnimacion : MonoBehaviour
 
         // Fin
         elemento.color = colorFinal;
+
+        if (alFinal != null)
+            alFinal.Invoke();
+    }
+
+    private static IEnumerator AnimaciónNúmeros(TMP_Text texto, int númeroInicio, int númeroFinal, Action alFinal)
+    {
+        int númeroActual = númeroInicio;
+        yield return new WaitForSeconds(0.4f);
+
+        while (númeroActual != númeroFinal)
+        {
+            if (númeroActual < númeroFinal)
+                texto.text = (númeroActual++).ToString();
+            else if (númeroActual > númeroFinal)
+                texto.text = (númeroActual--).ToString();
+
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        // Fin
+        texto.text = númeroFinal.ToString();
 
         if (alFinal != null)
             alFinal.Invoke();

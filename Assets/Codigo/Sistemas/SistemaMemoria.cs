@@ -56,9 +56,15 @@ public class SistemaMemoria
         PlayerPrefs.SetString(Valores.vidas.ToString(), DesEncriptar(vidasTotales.ToString()));
     }
 
-    public static void AsignarNuevoPuntajeMáximo(Juegos juego)
+    public static bool AsignarNuevoPuntajeMáximo(Juegos juego)
     {
-        PlayerPrefs.SetString(juego.ToString(), DesEncriptar(ObtenerPuntaje().ToString()));
+        if (ObtenerPuntaje() > ObtenerMaxPuntaje(juego))
+        {
+            PlayerPrefs.SetString(juego.ToString(), DesEncriptar(ObtenerPuntaje().ToString()));
+            return true;
+        }
+        else
+            return false;
     }
 
     public static int ObtenerPuntaje()

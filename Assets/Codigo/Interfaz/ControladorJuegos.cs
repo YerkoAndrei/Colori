@@ -1,8 +1,8 @@
 ﻿// YerkoAndrei
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using static Constantes;
 
 public class ControladorJuegos : MonoBehaviour
@@ -16,8 +16,9 @@ public class ControladorJuegos : MonoBehaviour
     [SerializeField] private Color colorTextoSinGuardar;
 
     [Header("Puntaje")]
-    [SerializeField] private TMP_Text txtMaxPuntaje;
     [SerializeField] private TMP_Text txtPuntaje;
+    [SerializeField] private TMP_Text txtMaxPuntaje;
+    [SerializeField] private TMP_Text txtMaxPuntajePausa;
 
     [Header("Publicidad")]
     [SerializeField] private float tiempoPublicidad;
@@ -27,6 +28,7 @@ public class ControladorJuegos : MonoBehaviour
     [Header("Paneles")]
     [SerializeField] private GameObject panelJuego;
     [SerializeField] private GameObject panelPausa;
+    [SerializeField] private Button btnPausa;
     [SerializeField] private Button[] botones;
 
     [Header("Animaciones")]
@@ -49,6 +51,7 @@ public class ControladorJuegos : MonoBehaviour
 
         SistemaMemoria.IniciarPuntaje();
         txtMaxPuntaje.text = SistemaMemoria.ObtenerMaxPuntaje(juego).ToString();
+        txtMaxPuntajePausa.text = SistemaMemoria.ObtenerMaxPuntaje(juego).ToString();
 
         puntaje = SistemaMemoria.ObtenerPuntaje();
         txtPuntaje.text = SistemaMemoria.ObtenerPuntaje().ToString();
@@ -56,6 +59,7 @@ public class ControladorJuegos : MonoBehaviour
 
         contadorTiempo = tiempoPublicidad;
         btnPublicidad.interactable = true;
+        btnPausa.interactable = true;
 
         panelJuego.SetActive(true);
         panelPausa.SetActive(false);
@@ -82,13 +86,17 @@ public class ControladorJuegos : MonoBehaviour
     public void GuardarPuntaje()
     {
         btnPublicidad.interactable = false;
-        txtPuntaje.color = Color.white;
         contadorActivo = false;
 
-        if (SistemaMemoria.ObtenerPuntaje() > SistemaMemoria.ObtenerMaxPuntaje(juego))
+        // Animaciíon nuevo puntaje
+        if (SistemaMemoria.AsignarNuevoPuntajeMáximo(juego))
         {
-            SistemaMemoria.AsignarNuevoPuntajeMáximo(juego);
-            // animar puntaje
+            txtPuntaje.color = Color.white;
+            var actualPuntaje =  int.Parse(txtPuntaje.text);
+            var actualMaxPuntaje = int.Parse(txtMaxPuntaje.text);
+
+            SistemaAnimacion.AnimarNúmeros(txtPuntaje, actualPuntaje, 0, () => txtPuntaje.color = colorTextoSinGuardar);
+            SistemaAnimacion.AnimarNúmeros(txtMaxPuntaje, actualMaxPuntaje, SistemaMemoria.ObtenerMaxPuntaje(juego), null);
         }
     }
 
@@ -125,6 +133,7 @@ public class ControladorJuegos : MonoBehaviour
 
         activo = false;
         contadorActivo = true;
+        btnPausa.interactable = false;
 
         rectFinal.gameObject.SetActive(true);
         rectReintentar.gameObject.SetActive(true);
@@ -158,7 +167,8 @@ public class ControladorJuegos : MonoBehaviour
                 rectBotonesPausa.gameObject.SetActive(false);
                 rectImagenesPausa.gameObject.SetActive(false);
                 rectReanudar.gameObject.SetActive(false);
-                });
+                btnPausa.interactable = true;
+            });
         }
         else
         {
@@ -167,6 +177,7 @@ public class ControladorJuegos : MonoBehaviour
             rectBotonesPausa.gameObject.SetActive(true);
             rectImagenesPausa.gameObject.SetActive(true);
             rectReanudar.gameObject.SetActive(true);
+            btnPausa.interactable = false;
 
             SistemaAnimacion.AnimarPanel(rectBotonesPausa, 1, true, true, Direcciones.izquierda, null);
             SistemaAnimacion.AnimarPanel(rectImagenesPausa, 1, true, true, Direcciones.arriba, null);
@@ -177,6 +188,24 @@ public class ControladorJuegos : MonoBehaviour
     public void EnClicPublicidad()
     {
         //SistemaPublicidad
+        RecompensaPublicidad();
+    }
+
+    private void RecompensaPublicidad()
+    {
+        SistemaAnimacion.AnimarPanel(rectFinal, 1, false, true, Direcciones.arriba, null);
+        SistemaAnimacion.AnimarPanel(rectReintentar, 1, false, true, Direcciones.abajo, () =>
+        {
+            rectFinal.gameObject.SetActive(false);
+            rectReintentar.gameObject.SetActive(false);
+            btnPausa.interactable = true;
+
+            contadorActivo = false;
+            contadorTiempo = tiempoPublicidad;
+            btnPublicidad.interactable = true;
+
+            interfaz.Pausar(false);
+        });
     }
 
     public void EnClicSalir()
@@ -188,9 +217,15 @@ public class ControladorJuegos : MonoBehaviour
     {
         SistemaMemoria.IniciarPuntaje();
         txtMaxPuntaje.text = SistemaMemoria.ObtenerMaxPuntaje(juego).ToString();
+        txtMaxPuntajePausa.text = SistemaMemoria.ObtenerMaxPuntaje(juego).ToString();
 
         puntaje = SistemaMemoria.ObtenerPuntaje();
         txtPuntaje.text = SistemaMemoria.ObtenerPuntaje().ToString();
+        txtPuntaje.color = colorTextoSinGuardar;
+
+        contadorActivo = false;
+        contadorTiempo = tiempoPublicidad;
+        btnPublicidad.interactable = true;
         interfaz.ReiniciarVisual();
 
         SistemaAnimacion.AnimarPanel(rectFinal, 1, false, true, Direcciones.arriba, null);
@@ -198,14 +233,10 @@ public class ControladorJuegos : MonoBehaviour
         {
             rectFinal.gameObject.SetActive(false);
             rectReintentar.gameObject.SetActive(false);
+            btnPausa.interactable = true;
 
             interfaz.Reiniciar();
         });
-    }
-
-    public void EnClicCompartir()
-    {
-
     }
 
     public void EnClicClasificar()
