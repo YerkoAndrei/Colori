@@ -27,7 +27,8 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
 
     private ControladorJuegos controlador;
 
-    private bool activo;
+    [HideInInspector] public bool activo;
+
     private bool dirección;
     private bool acelerando;
     private float velocidad;
@@ -96,12 +97,17 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
         Rotar();
     }
 
-    // Interfaz externa
+    // Interfaz 
+    public void Pausar(bool pausa)
+    {
+        activo = !pausa;
+    }
+
     public void Perder()
     {
         activo = false;
 
-        var proyectiles = FindObjectsOfType<Proyectil>();
+        var proyectiles = FindObjectsOfType<ProyectilCian>();
         foreach(var proyectil in proyectiles)
         {
             Destroy(proyectil.gameObject);
