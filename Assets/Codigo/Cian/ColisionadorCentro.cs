@@ -11,7 +11,7 @@ public class ColisionadorCentro : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        controlador.RestarVidas(collider.GetComponent<Proyectil>().tipoProyectil);
+        controlador.RestarVidas(collider.GetComponent<ProyectilCian>().tipoProyectil);
         Destroy(collider.gameObject);
     }
 }

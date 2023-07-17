@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using static Constantes;
 
-public class Proyectil : MonoBehaviour
+public class ProyectilCian : MonoBehaviour
 {
     [Header("Variables")]
     [Ocultar] public TipoProyectil tipoProyectil;
@@ -13,10 +13,13 @@ public class Proyectil : MonoBehaviour
     [SerializeField] private Color colorSuave;
     [SerializeField] private Color colorFuerte;
 
+    private ControladorCian controlador;
     private float velocidad;
 
     private void Start()
     {
+        controlador = FindObjectOfType<ControladorCian>();
+
         float aleatorio = Random.Range(0, 10);
         if (aleatorio < 7)
         {
@@ -36,6 +39,9 @@ public class Proyectil : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!controlador.activo)
+            return;
+
         transform.position = Vector2.MoveTowards(transform.position, Vector2.zero, velocidad * Time.fixedDeltaTime);
     }
 }
