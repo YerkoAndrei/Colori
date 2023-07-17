@@ -7,7 +7,8 @@ using static Constantes;
 
 public class ControladorJuegos : MonoBehaviour
 {
-    [Header("Variables")]
+    [Header("Variables (Solo lectura)")]
+    [SerializeField] private Juegos juego;
     [Ocultar] [SerializeField] private int vidas;
     [Ocultar] [SerializeField] private int puntaje;
 
@@ -39,9 +40,11 @@ public class ControladorJuegos : MonoBehaviour
     {
         interfaz = FindObjectsOfType<MonoBehaviour>().OfType<InterfazJuego>().FirstOrDefault();
 
-        // sistema memoria
-        txtMaxPuntaje.text = "";
-        txtPuntaje.text = puntaje.ToString();
+        SistemaMemoria.IniciarPuntaje();
+        txtMaxPuntaje.text = SistemaMemoria.ObtenerMaxPuntaje(juego).ToString();
+
+        puntaje = SistemaMemoria.ObtenerPuntaje();
+        txtPuntaje.text = SistemaMemoria.ObtenerPuntaje().ToString();
         txtPuntaje.color = colorTextoSinGuardar;
 
         contadorTiempo = tiempoPublicidad;
@@ -70,35 +73,38 @@ public class ControladorJuegos : MonoBehaviour
         txtPuntaje.color = Color.white;
         contadorActivo = false;
 
-        // animar puntaje
+        if (SistemaMemoria.ObtenerPuntaje() > SistemaMemoria.ObtenerMaxPuntaje(juego))
+        {
+            SistemaMemoria.AsignarNuevoPuntajeMáximo(juego);
+            // animar puntaje
+        }
     }
 
     public void SumarPuntaje(int sumar)
     {
-        // sistema memoria
-        puntaje += sumar;
-        txtPuntaje.text = puntaje.ToString();
+        SistemaMemoria.SumarPuntaje(sumar);
+        puntaje = SistemaMemoria.ObtenerPuntaje();
+        txtPuntaje.text = SistemaMemoria.ObtenerPuntaje().ToString();
     }
 
     public void RestartVida(int restar)
     {
-        // sistema memoria
-        vidas -= restar;
+        SistemaMemoria.RestarVidas(restar);
+        vidas = SistemaMemoria.ObtenerVidas();
 
-        if (vidas <= 0)
+        if (SistemaMemoria.ObtenerVidas() <= 0)
             Perder();
     }
 
     public void IniciarVidas(int vidasTotales)
     {
-        // sistema memoria
-        vidas = vidasTotales;
+        SistemaMemoria.IniciarVidas(vidasTotales);
+        vidas = SistemaMemoria.ObtenerVidas();
     }
 
     public int ObtenerVidas()
     {
-        // sistema memoria
-        return vidas;
+        return SistemaMemoria.ObtenerVidas();
     }
 
     public void Perder()
@@ -126,18 +132,21 @@ public class ControladorJuegos : MonoBehaviour
 
     public void EnClicPublicidad()
     {
-        //sistemaPublicidad
+        //SistemaPublicidad
     }
 
     public void EnClicSalir()
     {
-        //SistemaEscenas
+        SistemaEscenas.CambiarEscena(Juegos.menu);
     }
 
     public void EnClicReintentar()
     {
-        puntaje = 0;
-        txtPuntaje.text = puntaje.ToString();
+        SistemaMemoria.IniciarPuntaje();
+        txtMaxPuntaje.text = SistemaMemoria.ObtenerMaxPuntaje(juego).ToString();
+
+        puntaje = SistemaMemoria.ObtenerPuntaje();
+        txtPuntaje.text = SistemaMemoria.ObtenerPuntaje().ToString();
         interfaz.ReiniciarVisual();
 
         SistemaAnimacion.AnimarPanel(panelFinal, 1, false, true, Direcciones.arriba, null);
