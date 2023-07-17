@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3497425248015213684}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.08, y: 0.08, z: 1}
+  m_LocalScale: {x: 0.06, y: 0.06, z: 1}
   m_Children:
   - {fileID: 6514004153817128145}
   m_Father: {fileID: 0}
@@ -46,9 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tipoProyectil: 0
+  velocidadSuave: 1.6
+  velocidadFuerte: 2.8
   imagen: {fileID: 8560079422983451926}
-  colorSuave: {r: 0, g: 1, b: 0, a: 1}
-  colorFuerte: {r: 1, g: 0, b: 0, a: 1}
+  colorSuave: {r: 0, g: 0.78431374, b: 0.78431374, a: 1}
+  colorFuerte: {r: 1, g: 0.19607843, b: 0, a: 1}
 --- !u!58 &5861187722285771284
 CircleCollider2D:
   m_ObjectHideFlags: 0

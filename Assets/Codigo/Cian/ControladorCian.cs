@@ -101,17 +101,12 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
     public void Pausar(bool pausa)
     {
         activo = !pausa;
+        Desactivar();
     }
 
     public void Perder()
     {
         activo = false;
-
-        var proyectiles = FindObjectsOfType<ProyectilCian>();
-        foreach(var proyectil in proyectiles)
-        {
-            Destroy(proyectil.gameObject);
-        }
     }
 
     public void Reiniciar()
@@ -124,6 +119,12 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
         estadoVida.color = colorCompleta;
         espada.rotation = Quaternion.identity;
         decoCentro.rotation = Quaternion.identity;
+
+        var proyectiles = FindObjectsOfType<ProyectilCian>();
+        foreach (var proyectil in proyectiles)
+        {
+            Destroy(proyectil.gameObject);
+        }
     }
 
     // Interfaz interna

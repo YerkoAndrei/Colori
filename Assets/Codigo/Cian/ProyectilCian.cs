@@ -5,6 +5,8 @@ public class ProyectilCian : MonoBehaviour
 {
     [Header("Variables")]
     [Ocultar] public TipoProyectil tipoProyectil;
+    [SerializeField] private float velocidadSuave;
+    [SerializeField] private float velocidadFuerte;
 
     [Header("Referencias")]
     [SerializeField] private SpriteRenderer imagen;
@@ -24,14 +26,14 @@ public class ProyectilCian : MonoBehaviour
         if (aleatorio < 7)
         {
             tipoProyectil = TipoProyectil.suave;
-            velocidad = 2f;
+            velocidad = velocidadSuave;
             imagen.color = colorSuave;
             imagen.sortingOrder = 0;
         }
         else
         {
             tipoProyectil = TipoProyectil.fuerte;
-            velocidad = 4f;
+            velocidad = velocidadFuerte;
             imagen.color = colorFuerte;
             imagen.sortingOrder = 1;
         }
