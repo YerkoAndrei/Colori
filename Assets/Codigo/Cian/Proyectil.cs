@@ -34,8 +34,8 @@ public class Proyectil : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        transform.position = Vector2.MoveTowards(transform.position, Vector2.zero, velocidad * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, Vector2.zero, velocidad * Time.fixedDeltaTime);
     }
 }

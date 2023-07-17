@@ -186,13 +186,13 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
     {
         if (dirección)
         {            
-            decoCentro.Rotate(0, 0, velocidad * Time.deltaTime * 100);
-            espada.Rotate(0, 0, velocidad * Time.deltaTime * -100);
+            decoCentro.Rotate(0, 0, velocidad * Time.fixedDeltaTime * 100);
+            espada.Rotate(0, 0, velocidad * Time.fixedDeltaTime * -100);
         }
         else
         {
-            decoCentro.Rotate(0, 0, velocidad * Time.deltaTime * -100);
-            espada.Rotate(0, 0, velocidad * Time.deltaTime * 100);
+            decoCentro.Rotate(0, 0, velocidad * Time.fixedDeltaTime * -100);
+            espada.Rotate(0, 0, velocidad * Time.fixedDeltaTime * 100);
         }
     }
 
