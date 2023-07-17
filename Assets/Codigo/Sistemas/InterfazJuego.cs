@@ -1,6 +1,11 @@
 ﻿public interface InterfazJuego
 {
-    int ObtenerPuntaje();
+    // Externo
     void Perder();
     void Reiniciar();
+    void ReiniciarVisual();
+
+    // Interno
+    void SumarPuntos(int sumar);
+    void RestarVidas(int restar);
 }

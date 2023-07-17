@@ -1,4 +1,5 @@
 ﻿// YerkoAndrei
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,8 +7,9 @@ using static Constantes;
 
 public class ControladorJuegos : MonoBehaviour
 {
-    [Header("Puntaje")]
-    [SerializeField] private int puntaje;
+    [Header("Variables")]
+    [Ocultar] [SerializeField] private int vidas;
+    [Ocultar] [SerializeField] private int puntaje;
 
     [Header("Colores")]
     [SerializeField] private Color colorTextoSinGuardar;
@@ -31,8 +33,12 @@ public class ControladorJuegos : MonoBehaviour
     private bool contadorActivo;
     private float contadorTiempo;
 
+    private InterfazJuego interfaz;
+
     private void Start()
     {
+        interfaz = FindObjectsOfType<MonoBehaviour>().OfType<InterfazJuego>().FirstOrDefault();
+
         // sistema memoria
         txtMaxPuntaje.text = "";
         txtPuntaje.text = puntaje.ToString();
@@ -53,21 +59,52 @@ public class ControladorJuegos : MonoBehaviour
 
         contadorTiempo -= Time.deltaTime;
         imgContadorPublicidad.fillAmount = (contadorTiempo / tiempoPublicidad);
+
         if(contadorTiempo <= 0)
-        {
-            btnPublicidad.interactable = false;
-            contadorActivo = false;
-        }
+            GuardarPuntaje();
     }
 
-    public void AgregarPuntaje(int agregar)
+    public void GuardarPuntaje()
+    {
+        btnPublicidad.interactable = false;
+        txtPuntaje.color = Color.white;
+        contadorActivo = false;
+
+        // animar puntaje
+    }
+
+    public void SumarPuntaje(int sumar)
     {
         // sistema memoria
-        puntaje += agregar;
+        puntaje += sumar;
+        txtPuntaje.text = puntaje.ToString();
+    }
+
+    public void RestartVida(int restar)
+    {
+        // sistema memoria
+        vidas -= restar;
+
+        if (vidas <= 0)
+            Perder();
+    }
+
+    public void IniciarVidas(int vidasTotales)
+    {
+        // sistema memoria
+        vidas = vidasTotales;
+    }
+
+    public int ObtenerVidas()
+    {
+        // sistema memoria
+        return vidas;
     }
 
     public void Perder()
     {
+        interfaz.Perder();
+
         activo = false;
         contadorActivo = true;
 
@@ -99,7 +136,18 @@ public class ControladorJuegos : MonoBehaviour
 
     public void EnClicReintentar()
     {
-        //SistemaEscenas
+        puntaje = 0;
+        txtPuntaje.text = puntaje.ToString();
+        interfaz.ReiniciarVisual();
+
+        SistemaAnimacion.AnimarPanel(panelFinal, 1, false, true, Direcciones.arriba, null);
+        SistemaAnimacion.AnimarPanel(panelReintentar, 1, false, true, Direcciones.abajo, () =>
+        {
+            panelFinal.gameObject.SetActive(false);
+            panelReintentar.gameObject.SetActive(false);
+
+            interfaz.Reiniciar();
+        });
     }
 
     public void EnClicCompartir()

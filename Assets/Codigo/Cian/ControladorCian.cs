@@ -5,8 +5,6 @@ using static Constantes;
 public class ControladorCian : MonoBehaviour, InterfazJuego
 {
     [Header("Variables")]
-    [Ocultar] [SerializeField] private int vidas;
-    [Ocultar] [SerializeField] private int puntaje;
     [SerializeField] private float tiempoInstanciación;
     [SerializeField] private float tiempoAceleración;
     [SerializeField] private float tiempoClicPresionado;
@@ -27,6 +25,8 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
     [SerializeField] private SpriteRenderer estadoVida;
     [SerializeField] private GameObject prefabProyectil;
 
+    private ControladorJuegos controlador;
+
     private bool activo;
     private bool dirección;
     private bool acelerando;
@@ -38,10 +38,19 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
 
     private void Start()
     {
-        vidas = 10;
+        controlador = FindObjectOfType<ControladorJuegos>();
+        Iniciar();
+    }
+
+    private void Iniciar()
+    {
+        controlador.IniciarVidas(10);
+
         dirección = true;
         activo = true;
         estadoVida.color = colorCompleta;
+        espada.rotation = Quaternion.identity;
+        decoCentro.rotation = Quaternion.identity;
 
         velocidad = velocidadNormal;
         tempoAceleración = tiempoAceleración;
@@ -87,12 +96,7 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
         Rotar();
     }
 
-    // Interfaz
-    public int ObtenerPuntaje()
-    {
-        return puntaje;
-    }
-
+    // Interfaz externa
     public void Perder()
     {
         activo = false;
@@ -102,13 +106,29 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
         {
             Destroy(proyectil.gameObject);
         }
-
-        FindObjectOfType<ControladorJuegos>().Perder();
     }
 
     public void Reiniciar()
     {
+        Iniciar();
+    }
 
+    public void ReiniciarVisual()
+    {
+        estadoVida.color = colorCompleta;
+        espada.rotation = Quaternion.identity;
+        decoCentro.rotation = Quaternion.identity;
+    }
+
+    // Interfaz interna
+    public void SumarPuntos(int sumar)
+    {
+        controlador.SumarPuntaje(sumar);
+    }
+
+    public void RestarVidas(int restar)
+    {
+        controlador.RestartVida(restar);
     }
 
     // Juego
@@ -177,32 +197,30 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
     }
 
     // Centro
-    public void RestarVida(TipoProyectil tipoProyectil)
+    public void RestarVidas(TipoProyectil tipoProyectil)
     {
         switch(tipoProyectil)
         {
             case TipoProyectil.suave:
-                vidas -= 1;
+                RestarVidas(1);
                 // sonido
                 // efecto
                 break;
             case TipoProyectil.fuerte:
-                vidas -= 2;
+                RestarVidas(2);
                 // sonido
                 // efecto
                 break;
         }
 
         // Colores
+        var vidas = controlador.ObtenerVidas();
         if (vidas > 5)
             estadoVida.color = colorAlta;
         else if (vidas > 1)
             estadoVida.color = colorBaja;
         else if (vidas <= 1)
             estadoVida.color = colorFinal;
-
-        if (vidas <= 0)
-            Perder();
     }
 
     // Espada
@@ -211,12 +229,12 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
         switch (tipoProyectil)
         {
             case TipoProyectil.suave:
-                puntaje += 1;
+                SumarPuntos(1);
                 // sonido
                 // efecto
                 break;
             case TipoProyectil.fuerte:
-                puntaje += 2;
+                SumarPuntos(2);
                 // sonido
                 // efecto
                 break;
