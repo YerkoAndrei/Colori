@@ -20,13 +20,7 @@ public class SistemaAnimacion : MonoBehaviour
         {
             instancia = this;
             DontDestroyOnLoad(gameObject);
-            Iniciar();
         }
-    }
-
-    private void Iniciar()
-    {
-
     }
 
     public static float EvaluarCurva(float tiempo)

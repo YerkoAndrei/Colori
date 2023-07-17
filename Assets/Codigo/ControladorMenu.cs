@@ -51,6 +51,11 @@ public class ControladorMenu : MonoBehaviour
         juegoActual = ObtenerJuegoAnterior();
     }
 
+    public void EnClicJuego(Juegos juego)
+    {
+        SistemaEscenas.CambiarEscena(juego);
+    }
+
     private void ActivarBotones(bool activar)
     {
         for(int i=0; i< botonesFlujo.Length; i++)

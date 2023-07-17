@@ -1,8 +1,15 @@
 ﻿// YerkoAndrei
 public class Constantes
 {
+    public enum Valores
+    {
+        puntaje,
+        vidas
+    }
+
     public enum Juegos
     {
+        menu,
         cian,
         amarella,
         magenta
