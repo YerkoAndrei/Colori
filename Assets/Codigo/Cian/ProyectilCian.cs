@@ -23,7 +23,7 @@ public class ProyectilCian : MonoBehaviour
         controlador = FindObjectOfType<ControladorCian>();
 
         float aleatorio = Random.Range(0, 10);
-        if (aleatorio < 7)
+        if (aleatorio < 8)
         {
             tipoProyectil = TipoProyectil.suave;
             velocidad = velocidadSuave;

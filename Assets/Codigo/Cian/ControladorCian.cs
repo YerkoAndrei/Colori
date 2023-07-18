@@ -148,16 +148,16 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
         switch (posiciónAleatoria)
         {
             case 0:
-                posiciónExacta = new Vector2(Random.Range(6, 8), Random.Range(-8, 8));
+                posiciónExacta = new Vector2(Random.Range(12, 14), Random.Range(-10, 10));
                 break;
             case 1:
-                posiciónExacta = new Vector2(Random.Range(-6, -8), Random.Range(-8, 8));
+                posiciónExacta = new Vector2(Random.Range(-12, -14), Random.Range(-10, 10));
                 break;
             case 2:
-                posiciónExacta = new Vector2(Random.Range(-8, 8), Random.Range(-6, -8));
+                posiciónExacta = new Vector2(Random.Range(-10, 10), Random.Range(-12, -14));
                 break;
             case 3:
-                posiciónExacta = new Vector2(Random.Range(-8, 8), Random.Range(6, 8));
+                posiciónExacta = new Vector2(Random.Range(-10, 10), Random.Range(12, 14));
                 break;
         }
 
