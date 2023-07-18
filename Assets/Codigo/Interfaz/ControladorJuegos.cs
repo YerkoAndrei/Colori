@@ -88,7 +88,7 @@ public class ControladorJuegos : MonoBehaviour
         btnPublicidad.interactable = false;
         contadorActivo = false;
 
-        // Animaciíon nuevo puntaje
+        // Animación nuevo puntaje
         if (SistemaMemoria.AsignarNuevoPuntajeMáximo(juego))
         {
             txtPuntaje.color = Color.white;
@@ -210,11 +210,28 @@ public class ControladorJuegos : MonoBehaviour
 
     public void EnClicSalir()
     {
+        // Guardar puntaje
+        if (contadorActivo)
+        {
+            contadorActivo = false;
+            btnPublicidad.interactable = false;
+            SistemaMemoria.AsignarNuevoPuntajeMáximo(juego);
+        }
+
+        ActivarBotones(false);
         SistemaEscenas.CambiarEscena(Juegos.menu);
     }
 
     public void EnClicReintentar()
     {
+        // Guardar puntaje
+        if (contadorActivo)
+        {
+            contadorActivo = false;
+            btnPublicidad.interactable = false;
+            SistemaMemoria.AsignarNuevoPuntajeMáximo(juego);
+        }
+
         SistemaMemoria.IniciarPuntaje();
         txtMaxPuntaje.text = SistemaMemoria.ObtenerMaxPuntaje(juego).ToString();
         txtMaxPuntajePausa.text = SistemaMemoria.ObtenerMaxPuntaje(juego).ToString();
@@ -226,6 +243,7 @@ public class ControladorJuegos : MonoBehaviour
         contadorActivo = false;
         contadorTiempo = tiempoPublicidad;
         btnPublicidad.interactable = true;
+        ActivarBotones(false);
         interfaz.ReiniciarVisual();
 
         SistemaAnimacion.AnimarPanel(rectFinal, 1, false, true, Direcciones.arriba, null);
