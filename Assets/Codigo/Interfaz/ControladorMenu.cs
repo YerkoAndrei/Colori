@@ -14,7 +14,7 @@ public class ControladorMenu : MonoBehaviour
 
     private void Start()
     {
-        
+        //Recordar ultimo juego
     }
 
     public void EnClicSiguiente()

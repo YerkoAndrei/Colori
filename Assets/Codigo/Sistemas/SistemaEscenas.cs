@@ -10,7 +10,6 @@ public class SistemaEscenas : MonoBehaviour
 
     [Header("Panel")]
     [SerializeField] private Image panelNegro;
-    [SerializeField] private GameObject imgCarga;
 
     // Lerp
     private float tiempoLerp;
@@ -32,7 +31,6 @@ public class SistemaEscenas : MonoBehaviour
     private void Iniciar()
     {
         panelNegro.gameObject.SetActive(false);
-        imgCarga.SetActive(false);
     }
 
     public static void CambiarEscena(Juegos escena)
@@ -56,7 +54,6 @@ public class SistemaEscenas : MonoBehaviour
         }
 
         // Fin Lerp Entrada
-        imgCarga.SetActive(true);
         panelNegro.color = Color.black;
 
         // Carga y cambia de escena
@@ -64,7 +61,6 @@ public class SistemaEscenas : MonoBehaviour
         yield return new WaitUntil(() => cargaAsíncrona.isDone);
 
         // Salida
-        imgCarga.SetActive(false);
         tiempoLerp = 0;
 
         while (tiempoLerp < duraciónSalida)
