@@ -92,8 +92,6 @@ public class ControladorJuegos : MonoBehaviour
         btnPublicidad.interactable = false;
         contadorActivo = false;
 
-        personajeFinal.AnimarPersonaje(Animaciones.normal);
-
         // Animación nuevo puntaje
         if (SistemaMemoria.AsignarNuevoPuntajeMáximo(juego))
         {
@@ -101,9 +99,17 @@ public class ControladorJuegos : MonoBehaviour
             var actualPuntaje =  int.Parse(txtPuntaje.text);
             var actualMaxPuntaje = int.Parse(txtMaxPuntaje.text);
 
-            SistemaAnimacion.AnimarNúmeros(txtPuntaje, actualPuntaje, 0, () => txtPuntaje.color = colorTextoSinGuardar);
+            personajeFinal.AnimarPersonaje(Animaciones.feliz);
+
             SistemaAnimacion.AnimarNúmeros(txtMaxPuntaje, actualMaxPuntaje, SistemaMemoria.ObtenerMaxPuntaje(juego), null);
+            SistemaAnimacion.AnimarNúmeros(txtPuntaje, actualPuntaje, 0, () =>
+            {
+                txtPuntaje.color = colorTextoSinGuardar;
+                personajeFinal.AnimarPersonaje(Animaciones.normal);
+            });
         }
+        else
+            personajeFinal.AnimarPersonaje(Animaciones.normal);
     }
 
     public void SumarPuntaje(int sumar)

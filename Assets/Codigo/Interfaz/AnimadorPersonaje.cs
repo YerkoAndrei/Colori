@@ -30,6 +30,7 @@ public class AnimadorPersonaje : MonoBehaviour
         reemplazoAnimador["Izquierda"] = animaciónIzquierda;
         reemplazoAnimador["Feliz"] = animaciónFeliz;
         reemplazoAnimador["Enojada"] = animaciónEnojada;
+        reemplazoAnimador["Sorprendida"] = animaciónSorprendida;
 
         animador.runtimeAnimatorController = reemplazoAnimador;
         AnimarPersonaje(Animaciones.normal);
