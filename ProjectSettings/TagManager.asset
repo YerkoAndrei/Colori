@@ -50,3 +50,6 @@ TagManager:
   - name: Canvas
     uniqueID: 2896292687
     locked: 0
+  - name: CanvasPersonaje
+    uniqueID: 640780645
+    locked: 0
