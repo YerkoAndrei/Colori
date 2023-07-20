@@ -15,6 +15,18 @@ public class Constantes
         magenta
     }
 
+    public enum Animaciones
+    {
+        normal,
+        entrarDerecha,
+        entrarIzquierda,
+        salirDerecha,
+        salirIzquierda,
+        feliz,
+        enojada,
+        sorprendida
+    }
+
     public enum Direcciones
     {
         arriba,

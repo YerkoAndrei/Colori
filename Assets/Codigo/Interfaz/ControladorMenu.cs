@@ -23,10 +23,15 @@ public class ControladorMenu : MonoBehaviour
         juegos[ObtenerJuegoSiguiente()].ActivarBotón(false);
         ActivarBotones(false);
 
+        // Personaje
+        juegos[juegoActual].AnimarPersonaje(Animaciones.salirDerecha);
+        juegos[ObtenerJuegoSiguiente()].AnimarPersonaje(Animaciones.entrarDerecha);
+
         SistemaAnimacion.AnimarPanel(juegos[juegoActual].rectTransform, tiempoAnimación, false, false, Direcciones.izquierda, null);
         SistemaAnimacion.AnimarPanel(juegos[ObtenerJuegoSiguiente()].rectTransform, tiempoAnimación, true, true, Direcciones.derecha,
             () =>
             {
+                juegos[juegoActual].AnimarPersonaje(Animaciones.normal);
                 juegos[juegoActual].ActivarBotón(true);
                 ActivarBotones(true);
             });
@@ -40,10 +45,15 @@ public class ControladorMenu : MonoBehaviour
         juegos[ObtenerJuegoAnterior()].ActivarBotón(false);
         ActivarBotones(false);
 
+        // Personaje
+        juegos[juegoActual].AnimarPersonaje(Animaciones.salirIzquierda);
+        juegos[ObtenerJuegoAnterior()].AnimarPersonaje(Animaciones.entrarIzquierda);
+
         SistemaAnimacion.AnimarPanel(juegos[juegoActual].rectTransform, tiempoAnimación, false, false, Direcciones.derecha, null);
         SistemaAnimacion.AnimarPanel(juegos[ObtenerJuegoAnterior()].rectTransform, tiempoAnimación, true, true, Direcciones.izquierda,
             () =>
             {
+                juegos[juegoActual].AnimarPersonaje(Animaciones.normal);
                 juegos[juegoActual].ActivarBotón(true);
                 ActivarBotones(true);
             });

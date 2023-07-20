@@ -38,6 +38,10 @@ public class ControladorJuegos : MonoBehaviour
     [SerializeField] private RectTransform rectImagenesPausa;
     [SerializeField] private RectTransform rectReanudar;
 
+    [Header("Animaciones personaje")]
+    [SerializeField] private AnimadorPersonaje personajePausa;
+    [SerializeField] private AnimadorPersonaje personajeFinal;
+
     [HideInInspector] public bool activo;
 
     private bool contadorActivo;
@@ -87,6 +91,8 @@ public class ControladorJuegos : MonoBehaviour
     {
         btnPublicidad.interactable = false;
         contadorActivo = false;
+
+        personajePausa.AnimarPersonaje(Animaciones.normal);
 
         // Animación nuevo puntaje
         if (SistemaMemoria.AsignarNuevoPuntajeMáximo(juego))
@@ -139,6 +145,8 @@ public class ControladorJuegos : MonoBehaviour
         rectReintentar.gameObject.SetActive(true);
         ActivarBotones(false);
 
+        personajePausa.AnimarPersonaje(Animaciones.sorprendida);
+
         SistemaAnimacion.AnimarPanel(rectFinal, 1, true, true, Direcciones.arriba, null);
         SistemaAnimacion.AnimarPanel(rectReintentar, 1, true, true, Direcciones.abajo, () => ActivarBotones(true));
     }
@@ -158,6 +166,8 @@ public class ControladorJuegos : MonoBehaviour
 
         if (activo)
         {
+            personajePausa.AnimarPersonaje(Animaciones.feliz);
+
             SistemaAnimacion.AnimarPanel(rectBotonesPausa, 1, false, true, Direcciones.izquierda, null);
             SistemaAnimacion.AnimarPanel(rectImagenesPausa, 1, false, true, Direcciones.arriba, null);
             SistemaAnimacion.AnimarPanel(rectReanudar, 1, false, true, Direcciones.abajo, () =>
@@ -178,6 +188,8 @@ public class ControladorJuegos : MonoBehaviour
             rectImagenesPausa.gameObject.SetActive(true);
             rectReanudar.gameObject.SetActive(true);
             btnPausa.interactable = false;
+
+            personajePausa.AnimarPersonaje(Animaciones.normal);
 
             SistemaAnimacion.AnimarPanel(rectBotonesPausa, 1, true, true, Direcciones.izquierda, null);
             SistemaAnimacion.AnimarPanel(rectImagenesPausa, 1, true, true, Direcciones.arriba, null);
@@ -204,6 +216,7 @@ public class ControladorJuegos : MonoBehaviour
             contadorTiempo = tiempoPublicidad;
             btnPublicidad.interactable = true;
 
+            personajePausa.AnimarPersonaje(Animaciones.feliz);
             interfaz.Pausar(false);
         });
     }
@@ -218,6 +231,11 @@ public class ControladorJuegos : MonoBehaviour
             SistemaMemoria.AsignarNuevoPuntajeMáximo(juego);
         }
 
+        if (activo)
+            personajeFinal.AnimarPersonaje(Animaciones.enojada);
+        else
+            personajePausa.AnimarPersonaje(Animaciones.enojada);
+        
         ActivarBotones(false);
         SistemaEscenas.CambiarEscena(Juegos.menu);
     }
@@ -245,6 +263,8 @@ public class ControladorJuegos : MonoBehaviour
         btnPublicidad.interactable = true;
         ActivarBotones(false);
         interfaz.ReiniciarVisual();
+
+        personajeFinal.AnimarPersonaje(Animaciones.feliz);
 
         SistemaAnimacion.AnimarPanel(rectFinal, 1, false, true, Direcciones.arriba, null);
         SistemaAnimacion.AnimarPanel(rectReintentar, 1, false, true, Direcciones.abajo, () =>

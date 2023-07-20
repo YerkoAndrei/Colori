@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 6786039005500008733}
   - component: {fileID: 6786039005500008732}
   - component: {fileID: 6786039005500008734}
+  - component: {fileID: 826711141405947172}
   m_Layer: 5
   m_Name: ElementoJuego
   m_TagString: Untagged
@@ -366,6 +367,31 @@ MonoBehaviour:
   rectTransform: {fileID: 6786039005500008723}
   btnJugar: {fileID: 6786039007166666298}
   txtPuntaje: {fileID: 1355675899186680675}
+  animadorPersonaje: {fileID: 826711141405947172}
+--- !u!114 &826711141405947172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6786039005500008722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f966945d103982947a649af868bfab35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animadorEstandar: {fileID: 9100000, guid: 5a4e0e83e1d8de7499b32bce20192a77, type: 2}
+  personaje: {fileID: 0}
+  caraNormal: {fileID: 0}
+  caraFeliz: {fileID: 0}
+  caraEnojada: {fileID: 0}
+  "animaci\xF3nQuietud": {fileID: 0}
+  "animaci\xF3nEntrarDerecha": {fileID: 0}
+  "animaci\xF3nEntrarIzquierda": {fileID: 0}
+  "animaci\xF3nSalirDerecha": {fileID: 0}
+  "animaci\xF3nSalirIzquierda": {fileID: 0}
+  "animaci\xF3nFeliz": {fileID: 0}
+  "animaci\xF3nEnojada": {fileID: 0}
 --- !u!1 &6786039006357198949
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,16 +5,20 @@ using static Constantes;
 
 public class ElementoJuego : MonoBehaviour
 {
+    [Header("Referencias")]
     public Juegos juego;
     public RectTransform rectTransform;
     [SerializeField] private Button btnJugar;
     [SerializeField] private TMP_Text txtPuntaje;
 
+    [Header("Personaje")]
+    [SerializeField] private AnimadorPersonaje animadorPersonaje;
+
     private ControladorMenu controlador;
 
     public void Start()
     {
-        controlador = FindObjectOfType<ControladorMenu>();
+        controlador = FindFirstObjectByType<ControladorMenu>();
         txtPuntaje.text = SistemaMemoria.ObtenerMaxPuntaje(juego).ToString();
     }
 
@@ -27,5 +31,12 @@ public class ElementoJuego : MonoBehaviour
     {
         ActivarBotón(false);
         controlador.EnClicJuego(juego);
+
+        animadorPersonaje.AnimarPersonaje(Animaciones.feliz);
+    }
+
+    public void AnimarPersonaje(Animaciones animacion)
+    {
+        animadorPersonaje.AnimarPersonaje(animacion);
     }
 }
