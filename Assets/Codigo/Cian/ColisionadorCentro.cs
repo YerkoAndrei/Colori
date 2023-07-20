@@ -6,7 +6,7 @@ public class ColisionadorCentro : MonoBehaviour
 
     private void Start()
     {
-        controlador = FindObjectOfType<ControladorCian>();
+        controlador = FindFirstObjectByType<ControladorCian>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

@@ -20,7 +20,7 @@ public class ProyectilCian : MonoBehaviour
 
     private void Start()
     {
-        controlador = FindObjectOfType<ControladorCian>();
+        controlador = FindFirstObjectByType<ControladorCian>();
 
         float aleatorio = Random.Range(0, 10);
         if (aleatorio < 8)

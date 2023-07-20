@@ -39,7 +39,7 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
 
     private void Start()
     {
-        controlador = FindObjectOfType<ControladorJuegos>();
+        controlador = FindFirstObjectByType<ControladorJuegos>();
         Iniciar();
     }
 
@@ -120,7 +120,7 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
         espada.rotation = Quaternion.identity;
         decoCentro.rotation = Quaternion.identity;
 
-        var proyectiles = FindObjectsOfType<ProyectilCian>();
+        var proyectiles = FindObjectsByType<ProyectilCian>(FindObjectsSortMode.None);
         foreach (var proyectil in proyectiles)
         {
             Destroy(proyectil.gameObject);
