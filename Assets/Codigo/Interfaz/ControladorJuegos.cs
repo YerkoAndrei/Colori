@@ -92,7 +92,7 @@ public class ControladorJuegos : MonoBehaviour
         btnPublicidad.interactable = false;
         contadorActivo = false;
 
-        personajePausa.AnimarPersonaje(Animaciones.normal);
+        personajeFinal.AnimarPersonaje(Animaciones.normal);
 
         // Animación nuevo puntaje
         if (SistemaMemoria.AsignarNuevoPuntajeMáximo(juego))
@@ -145,10 +145,14 @@ public class ControladorJuegos : MonoBehaviour
         rectReintentar.gameObject.SetActive(true);
         ActivarBotones(false);
 
-        personajePausa.AnimarPersonaje(Animaciones.sorprendida);
+        personajeFinal.AnimarPersonaje(Animaciones.normal);
 
         SistemaAnimacion.AnimarPanel(rectFinal, 1, true, true, Direcciones.arriba, null);
-        SistemaAnimacion.AnimarPanel(rectReintentar, 1, true, true, Direcciones.abajo, () => ActivarBotones(true));
+        SistemaAnimacion.AnimarPanel(rectReintentar, 1, true, true, Direcciones.abajo, () =>
+        {
+            ActivarBotones(true);
+            personajeFinal.AnimarPersonaje(Animaciones.sorprendida);
+        });        
     }
 
     private void ActivarBotones(bool activar)
@@ -231,7 +235,7 @@ public class ControladorJuegos : MonoBehaviour
             SistemaMemoria.AsignarNuevoPuntajeMáximo(juego);
         }
 
-        if (activo)
+        if (rectFinal.gameObject.activeSelf)
             personajeFinal.AnimarPersonaje(Animaciones.enojada);
         else
             personajePausa.AnimarPersonaje(Animaciones.enojada);

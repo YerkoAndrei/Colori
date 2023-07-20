@@ -35,11 +35,11 @@ public class AnimadorPersonaje : MonoBehaviour
         AnimarPersonaje(Animaciones.normal);
     }
 
-    public void AnimarPersonaje(Animaciones animacion)
+    public void AnimarPersonaje(Animaciones animación)
     {
         ApagarCaras();
 
-        switch (animacion)
+        switch (animación)
         {
             case Animaciones.normal:
                 caraNormal.SetActive(true);
