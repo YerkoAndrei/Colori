@@ -27,23 +27,24 @@ public class ControladorJuegos : MonoBehaviour
 
     [Header("Paneles")]
     [SerializeField] private GameObject panelJuego;
+    [SerializeField] private GameObject panelFinal;
     [SerializeField] private GameObject panelPausa;
     [SerializeField] private Button btnPausa;
     [SerializeField] private Button[] botones;
 
     [Header("Animaciones")]
     [SerializeField] private RectTransform rectFinal;
+    [SerializeField] private RectTransform rectBotonesFinal;
     [SerializeField] private RectTransform rectReintentar;
+    [SerializeField] private RectTransform rectPausa;
     [SerializeField] private RectTransform rectBotonesPausa;
-    [SerializeField] private RectTransform rectImagenesPausa;
     [SerializeField] private RectTransform rectReanudar;
 
     [Header("Animaciones personaje")]
     [SerializeField] private AnimadorPersonaje personajePausa;
     [SerializeField] private AnimadorPersonaje personajeFinal;
 
-    [HideInInspector] public bool activo;
-
+    private bool activo;
     private bool contadorActivo;
     private float contadorTiempo;
 
@@ -51,7 +52,7 @@ public class ControladorJuegos : MonoBehaviour
 
     private void Start()
     {
-        interfaz = FindObjectsOfType<MonoBehaviour>().OfType<InterfazJuego>().FirstOrDefault();
+        interfaz = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<InterfazJuego>().FirstOrDefault();
 
         SistemaMemoria.IniciarPuntaje();
         txtMaxPuntaje.text = SistemaMemoria.ObtenerMaxPuntaje(juego).ToString();
@@ -66,12 +67,15 @@ public class ControladorJuegos : MonoBehaviour
         btnPausa.interactable = true;
 
         panelJuego.SetActive(true);
+        panelFinal.SetActive(false);
         panelPausa.SetActive(false);
-        rectFinal.gameObject.SetActive(false);
-        rectReintentar.gameObject.SetActive(false);
-        rectBotonesPausa.gameObject.SetActive(false);
-        rectImagenesPausa.gameObject.SetActive(false);
-        rectReanudar.gameObject.SetActive(false);
+
+        rectFinal.gameObject.SetActive(true);
+        rectBotonesFinal.gameObject.SetActive(true);
+        rectReintentar.gameObject.SetActive(true);
+        rectPausa.gameObject.SetActive(true);
+        rectBotonesPausa.gameObject.SetActive(true);
+        rectReanudar.gameObject.SetActive(true);
         activo = true;
     }
 
@@ -147,13 +151,13 @@ public class ControladorJuegos : MonoBehaviour
         contadorActivo = true;
         btnPausa.interactable = false;
 
-        rectFinal.gameObject.SetActive(true);
-        rectReintentar.gameObject.SetActive(true);
+        panelFinal.SetActive(true);
         ActivarBotones(false);
 
         personajeFinal.AnimarPersonaje(Animaciones.normal);
 
         SistemaAnimacion.AnimarPanel(rectFinal, 1, true, true, Direcciones.arriba, null);
+        SistemaAnimacion.AnimarPanel(rectBotonesFinal, 1, true, true, Direcciones.izquierda, null);
         SistemaAnimacion.AnimarPanel(rectReintentar, 1, true, true, Direcciones.abajo, () =>
         {
             ActivarBotones(true);
@@ -179,14 +183,11 @@ public class ControladorJuegos : MonoBehaviour
             personajePausa.AnimarPersonaje(Animaciones.feliz);
 
             SistemaAnimacion.AnimarPanel(rectBotonesPausa, 1, false, true, Direcciones.izquierda, null);
-            SistemaAnimacion.AnimarPanel(rectImagenesPausa, 1, false, true, Direcciones.arriba, null);
+            SistemaAnimacion.AnimarPanel(rectPausa, 1, false, true, Direcciones.arriba, null);
             SistemaAnimacion.AnimarPanel(rectReanudar, 1, false, true, Direcciones.abajo, () =>
             {
                 interfaz.Pausar(false);
                 panelPausa.SetActive(false);
-                rectBotonesPausa.gameObject.SetActive(false);
-                rectImagenesPausa.gameObject.SetActive(false);
-                rectReanudar.gameObject.SetActive(false);
                 btnPausa.interactable = true;
             });
         }
@@ -194,15 +195,12 @@ public class ControladorJuegos : MonoBehaviour
         {
             interfaz.Pausar(true);
             panelPausa.SetActive(true);
-            rectBotonesPausa.gameObject.SetActive(true);
-            rectImagenesPausa.gameObject.SetActive(true);
-            rectReanudar.gameObject.SetActive(true);
             btnPausa.interactable = false;
 
             personajePausa.AnimarPersonaje(Animaciones.normal);
 
             SistemaAnimacion.AnimarPanel(rectBotonesPausa, 1, true, true, Direcciones.izquierda, null);
-            SistemaAnimacion.AnimarPanel(rectImagenesPausa, 1, true, true, Direcciones.arriba, null);
+            SistemaAnimacion.AnimarPanel(rectPausa, 1, true, true, Direcciones.arriba, null);
             SistemaAnimacion.AnimarPanel(rectReanudar, 1, true, true, Direcciones.abajo, () => ActivarBotones(true));
         }
     }
@@ -216,10 +214,10 @@ public class ControladorJuegos : MonoBehaviour
     private void RecompensaPublicidad()
     {
         SistemaAnimacion.AnimarPanel(rectFinal, 1, false, true, Direcciones.arriba, null);
+        SistemaAnimacion.AnimarPanel(rectBotonesFinal, 1, false, true, Direcciones.izquierda, null);
         SistemaAnimacion.AnimarPanel(rectReintentar, 1, false, true, Direcciones.abajo, () =>
         {
-            rectFinal.gameObject.SetActive(false);
-            rectReintentar.gameObject.SetActive(false);
+            panelFinal.SetActive(false);
             btnPausa.interactable = true;
 
             contadorActivo = false;
@@ -241,7 +239,7 @@ public class ControladorJuegos : MonoBehaviour
             SistemaMemoria.AsignarNuevoPuntajeMáximo(juego);
         }
 
-        if (rectFinal.gameObject.activeSelf)
+        if (panelFinal.activeSelf)
             personajeFinal.AnimarPersonaje(Animaciones.enojada);
         else
             personajePausa.AnimarPersonaje(Animaciones.enojada);
@@ -277,11 +275,12 @@ public class ControladorJuegos : MonoBehaviour
         personajeFinal.AnimarPersonaje(Animaciones.feliz);
 
         SistemaAnimacion.AnimarPanel(rectFinal, 1, false, true, Direcciones.arriba, null);
+        SistemaAnimacion.AnimarPanel(rectBotonesFinal, 1, false, true, Direcciones.arriba, null);
         SistemaAnimacion.AnimarPanel(rectReintentar, 1, false, true, Direcciones.abajo, () =>
         {
-            rectFinal.gameObject.SetActive(false);
-            rectReintentar.gameObject.SetActive(false);
+            panelFinal.SetActive(false);
             btnPausa.interactable = true;
+            activo = true;
 
             interfaz.Reiniciar();
         });
