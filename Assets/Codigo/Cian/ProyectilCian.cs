@@ -28,14 +28,14 @@ public class ProyectilCian : MonoBehaviour
             tipoProyectil = TipoProyectil.suave;
             velocidad = velocidadSuave;
             imagen.color = colorSuave;
-            imagen.sortingOrder = 0;
+            imagen.sortingOrder = 1;
         }
         else
         {
             tipoProyectil = TipoProyectil.fuerte;
             velocidad = velocidadFuerte;
             imagen.color = colorFuerte;
-            imagen.sortingOrder = 1;
+            imagen.sortingOrder = 2;
         }
     }
 

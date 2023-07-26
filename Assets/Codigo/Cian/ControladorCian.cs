@@ -24,9 +24,12 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
     [Header("Referencias")]
     [SerializeField] private SpriteRenderer estadoVida;
     [SerializeField] private GameObject prefabProyectil;
+    [SerializeField] private GameObject prefabPartículasDañoSuave;
+    [SerializeField] private GameObject prefabPartículasDañoFuerte;
+    [SerializeField] private GameObject prefabPartículasPuntoSuave;
+    [SerializeField] private GameObject prefabPartículasPuntoFuerte;
 
     private ControladorJuegos controlador;
-
     [HideInInspector] public bool activo;
 
     private bool dirección;
@@ -47,8 +50,8 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
     {
         controlador.IniciarVidas(10);
 
-        dirección = true;
         activo = true;
+        dirección = true;
         estadoVida.color = colorCompleta;
         espada.rotation = Quaternion.identity;
         decoCentro.rotation = Quaternion.identity;
@@ -204,19 +207,23 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
     }
 
     // Centro
-    public void RestarVidas(TipoProyectil tipoProyectil)
+    public void RestarVidas(TipoProyectil tipoProyectil, Vector2 posición)
     {
         switch(tipoProyectil)
         {
             case TipoProyectil.suave:
                 RestarVidas(1);
+
+                var suave = Instantiate(prefabPartículasDañoSuave, posición, Quaternion.identity);
+                Destroy(suave, 1);
                 // sonido
-                // efecto
                 break;
             case TipoProyectil.fuerte:
                 RestarVidas(2);
+
+                var fuerte = Instantiate(prefabPartículasDañoFuerte, posición, Quaternion.identity);
+                Destroy(fuerte, 1);
                 // sonido
-                // efecto
                 break;
         }
 
@@ -231,19 +238,23 @@ public class ControladorCian : MonoBehaviour, InterfazJuego
     }
 
     // Espada
-    public void SumarPuntos(TipoProyectil tipoProyectil)
+    public void SumarPuntos(TipoProyectil tipoProyectil, Vector2 posición)
     {
         switch (tipoProyectil)
         {
             case TipoProyectil.suave:
                 SumarPuntos(1);
+
+                var suave = Instantiate(prefabPartículasPuntoSuave, posición, Quaternion.identity);
+                Destroy(suave, 0.6f);
                 // sonido
-                // efecto
                 break;
             case TipoProyectil.fuerte:
                 SumarPuntos(2);
+
+                var fuerte = Instantiate(prefabPartículasPuntoFuerte, posición, Quaternion.identity);
+                Destroy(fuerte, 0.6f);
                 // sonido
-                // efecto
                 break;
         }
     }

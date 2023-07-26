@@ -11,7 +11,7 @@ public class ColisionadorEspada : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        controlador.SumarPuntos(collider.GetComponent<ProyectilCian>().tipoProyectil);
+        controlador.SumarPuntos(collider.GetComponent<ProyectilCian>().tipoProyectil, collider.transform.position);
         Destroy(collider.gameObject);
     }
 }
