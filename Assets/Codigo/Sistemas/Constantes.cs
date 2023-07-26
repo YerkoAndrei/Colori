@@ -1,6 +1,10 @@
 ﻿// YerkoAndrei
+using System;
+
 public class Constantes
 {
+    public static Random aleatorio;
+
     public enum Valores
     {
         puntaje,
@@ -39,5 +43,11 @@ public class Constantes
     {
         suave,
         fuerte
+    }
+
+    public enum TipoObstáculo
+    {
+        lento,
+        rápido
     }
 }

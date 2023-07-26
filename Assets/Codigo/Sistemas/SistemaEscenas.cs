@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using static Constantes;
+using System;
 
 public class SistemaEscenas : MonoBehaviour
 {
@@ -30,6 +31,14 @@ public class SistemaEscenas : MonoBehaviour
 
     private void Iniciar()
     {
+        // Semilla aleatoria
+        var fecha = DateTime.Parse("08/02/1996");
+        var semilla = (int)(DateTime.Now - fecha).TotalSeconds;
+
+        aleatorio = new System.Random(semilla);
+        UnityEngine.Random.InitState(semilla);
+
+        // Iniciar
         panelNegro.gameObject.SetActive(false);
     }
 
