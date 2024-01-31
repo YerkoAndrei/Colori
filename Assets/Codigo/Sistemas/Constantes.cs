@@ -14,9 +14,9 @@ public class Constantes
     public enum Juegos
     {
         menu,
-        cian,
-        amarella,
-        magenta
+        cian,           // color
+        amarella,       // color
+        magenta         // color
     }
 
     public enum Animaciones
