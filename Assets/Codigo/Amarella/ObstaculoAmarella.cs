@@ -1,55 +1,55 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Constantes;
 
 public class ObstaculoAmarella : MonoBehaviour
 {
-    [Ocultar] public TipoObst�culo tipoObst�culo;
+    [Ocultar] public TipoObstáculo tipoObstáculo;
 
     [Header("Colores")]
     [SerializeField] private Color colorLento;
-    [SerializeField] private Color colorR�pido;
+    [SerializeField] private Color colorRápido;
 
     [Header("Velocidades")]
     [SerializeField] private float velocidadLenta;
-    [SerializeField] private float velocidadR�pida;
+    [SerializeField] private float velocidadRápida;
 
-    private Transform[] obst�culos;
+    private Transform[] obstáculos;
     private Renderer[] renderers;
 
-    private bool direcci�n;
+    private bool dirección;
     private float velocidad;
     private Vector2 inicio;
     private Vector2 objetivo;
 
     private ControladorAmarella controlador;
-    private int cantidadObst�culos;
-    private float posici�nPositivaM�xima = 20f;
+    private int cantidadObstáculos;
+    private float posiciónPositivaMáxima = 20f;
 
     private void Start()
     {
         controlador = FindFirstObjectByType<ControladorAmarella>();
 
-        // Obst�culos vac�os
-        cantidadObst�culos = transform.childCount;
-        if (cantidadObst�culos == 0)
+        // Obstáculos vacíos
+        cantidadObstáculos = transform.childCount;
+        if (cantidadObstáculos == 0)
             return;
 
         renderers = GetComponentsInChildren<Renderer>();
 
         // Encuentra y posiciona
         var lista = new List<Transform>();
-        float espacio = ((posici�nPositivaM�xima * 2f) / (float)cantidadObst�culos);
-        float posici�nAcumulada = posici�nPositivaM�xima; 
+        float espacio = ((posiciónPositivaMáxima * 2f) / (float)cantidadObstáculos);
+        float posiciónAcumulada = posiciónPositivaMáxima; 
 
-        for (int i = 0; i < cantidadObst�culos; i++)
+        for (int i = 0; i < cantidadObstáculos; i++)
         {
             lista.Add(transform.GetChild(i));
-            lista[i].position = new Vector2(posici�nAcumulada, transform.position.y);
-            posici�nAcumulada -= espacio;
+            lista[i].position = new Vector2(posiciónAcumulada, transform.position.y);
+            posiciónAcumulada -= espacio;
         }
-        obst�culos = lista.ToArray();
+        obstáculos = lista.ToArray();
 
         // Velocidad y color aleatorios
         var esLento = Random.Range(0f, 1f) >= 0.2f;
@@ -57,71 +57,71 @@ public class ObstaculoAmarella : MonoBehaviour
         {
             if (esLento)
             {
-                tipoObst�culo = TipoObst�culo.lento;
+                tipoObstáculo = TipoObstáculo.lento;
                 renderers[i].material.color = colorLento;
                 velocidad = velocidadLenta;
             }
             else
             {
-                tipoObst�culo = TipoObst�culo.r�pido;
-                renderers[i].material.color = colorR�pido;
-                velocidad = velocidadR�pida;
+                tipoObstáculo = TipoObstáculo.rápido;
+                renderers[i].material.color = colorRápido;
+                velocidad = velocidadRápida;
             }
         }
 
-        // Direcci�n aleatoria
-        direcci�n = Random.Range(0f, 1f) >= 0.5f;
-        if (direcci�n)
+        // Dirección aleatoria
+        dirección = Random.Range(0f, 1f) >= 0.5f;
+        if (dirección)
         {
-            objetivo = new Vector2(posici�nPositivaM�xima, transform.position.y);
-            inicio = new Vector2(-(posici�nPositivaM�xima), transform.position.y);
+            objetivo = new Vector2(posiciónPositivaMáxima, transform.position.y);
+            inicio = new Vector2(-(posiciónPositivaMáxima), transform.position.y);
         }
         else
         {
-            objetivo = new Vector2(-(posici�nPositivaM�xima), transform.position.y);
-            inicio = new Vector2(posici�nPositivaM�xima, transform.position.y);
+            objetivo = new Vector2(-(posiciónPositivaMáxima), transform.position.y);
+            inicio = new Vector2(posiciónPositivaMáxima, transform.position.y);
         }
     }
 
     private void FixedUpdate()
     {
-        if (!controlador.activo || cantidadObst�culos == 0)
+        if (!controlador.activo || cantidadObstáculos == 0)
             return;
         
-        for (int i = 0; i < cantidadObst�culos; i++)
+        for (int i = 0; i < cantidadObstáculos; i++)
         {
-            obst�culos[i].position = Vector2.MoveTowards(obst�culos[i].position, objetivo, velocidad * Time.fixedDeltaTime);
+            obstáculos[i].position = Vector2.MoveTowards(obstáculos[i].position, objetivo, velocidad * Time.fixedDeltaTime);
             
-            if((direcci�n && (obst�culos[i].position.x >= objetivo.x)) ||
-              (!direcci�n && (obst�culos[i].position.x <= objetivo.x)))
-                obst�culos[i].position = inicio;
+            if((dirección && (obstáculos[i].position.x >= objetivo.x)) ||
+              (!dirección && (obstáculos[i].position.x <= objetivo.x)))
+                obstáculos[i].position = inicio;
         }
     }
 
-    public void Actualizar(Vector2 movimiento, float duraci�nMovimiento)
+    public void Actualizar(Vector2 movimiento, float duraciónMovimiento)
     {
-        StartCoroutine(Animaci�nMovimiento((transform.position + (Vector3)movimiento), duraci�nMovimiento));
+        StartCoroutine(AnimaciónMovimiento((transform.position + (Vector3)movimiento), duraciónMovimiento));
 
-        if (cantidadObst�culos == 0)
+        if (cantidadObstáculos == 0)
             return;
 
         objetivo += movimiento;
         inicio += movimiento;
     }
 
-    private IEnumerator Animaci�nMovimiento(Vector2 posici�nFinal, float duraci�nLerp)
+    private IEnumerator AnimaciónMovimiento(Vector2 posiciónFinal, float duraciónLerp)
     {
         float tiempoLerp = 0;
-        while (tiempoLerp < duraci�nLerp)
+        while (tiempoLerp < duraciónLerp)
         {
-            var tiempo = SistemaAnimacion.EvaluarCurvaR�pida(tiempoLerp / duraci�nLerp);
-            transform.position = Vector2.Lerp(transform.position, posici�nFinal, tiempo);
+            var tiempo = SistemaAnimacion.EvaluarCurvaRápida(tiempoLerp / duraciónLerp);
+            transform.position = Vector2.Lerp(transform.position, posiciónFinal, tiempo);
 
             tiempoLerp += Time.deltaTime;
             yield return null;
         }
 
         // Fin
-        transform.position = (Vector3)posici�nFinal;
+        transform.position = (Vector3)posiciónFinal;
     }
 }

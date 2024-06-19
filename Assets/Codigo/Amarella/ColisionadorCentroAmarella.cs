@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ColisionadorCentroAmarella : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class ColisionadorCentroAmarella : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        controlador.RestarVidas(collider.transform.parent.GetComponent<ObstaculoAmarella>().tipoObst�culo);
+        controlador.RestarVidas(collider.transform.parent.GetComponent<ObstaculoAmarella>().tipoObstáculo);
         //Destroy(collider.gameObject);
     }
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+锘縰sing UnityEngine;
 using static Constantes;
 
 public class AnimadorPersonaje : MonoBehaviour
@@ -11,12 +11,12 @@ public class AnimadorPersonaje : MonoBehaviour
     [SerializeField] private GameObject caraSorprendida;
 
     [Header("Animaciones")]
-    [SerializeField] private AnimationClip animaci髇Quietud;
-    [SerializeField] private AnimationClip animaci髇Derecha;
-    [SerializeField] private AnimationClip animaci髇Izquierda;
-    [SerializeField] private AnimationClip animaci髇Feliz;
-    [SerializeField] private AnimationClip animaci髇Enojada;
-    [SerializeField] private AnimationClip animaci髇Sorprendida;
+    [SerializeField] private AnimationClip animaci贸nQuietud;
+    [SerializeField] private AnimationClip animaci贸nDerecha;
+    [SerializeField] private AnimationClip animaci贸nIzquierda;
+    [SerializeField] private AnimationClip animaci贸nFeliz;
+    [SerializeField] private AnimationClip animaci贸nEnojada;
+    [SerializeField] private AnimationClip animaci贸nSorprendida;
 
     private void Start()
     {
@@ -25,22 +25,22 @@ public class AnimadorPersonaje : MonoBehaviour
         reemplazoAnimador.runtimeAnimatorController = ObtenerReemplazoControlador(animador);
 
         // Animaciones estandar
-        reemplazoAnimador["Quietud"] = animaci髇Quietud;
-        reemplazoAnimador["Derecha"] = animaci髇Derecha;
-        reemplazoAnimador["Izquierda"] = animaci髇Izquierda;
-        reemplazoAnimador["Feliz"] = animaci髇Feliz;
-        reemplazoAnimador["Enojada"] = animaci髇Enojada;
-        reemplazoAnimador["Sorprendida"] = animaci髇Sorprendida;
+        reemplazoAnimador["Quietud"] = animaci贸nQuietud;
+        reemplazoAnimador["Derecha"] = animaci贸nDerecha;
+        reemplazoAnimador["Izquierda"] = animaci贸nIzquierda;
+        reemplazoAnimador["Feliz"] = animaci贸nFeliz;
+        reemplazoAnimador["Enojada"] = animaci贸nEnojada;
+        reemplazoAnimador["Sorprendida"] = animaci贸nSorprendida;
 
         animador.runtimeAnimatorController = reemplazoAnimador;
         AnimarPersonaje(Animaciones.normal);
     }
 
-    public void AnimarPersonaje(Animaciones animaci髇)
+    public void AnimarPersonaje(Animaciones animaci贸n)
     {
         ApagarCaras();
 
-        switch (animaci髇)
+        switch (animaci贸n)
         {
             case Animaciones.normal:
                 caraNormal.SetActive(true);

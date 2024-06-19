@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using static Constantes;
 
@@ -7,7 +7,7 @@ public class ControladorAmarella : MonoBehaviour, InterfazJuego
     [Header("Variables")]
     [SerializeField] private float tiempoClicPresionado;
     [SerializeField] private float tiempoEntreClics;
-    [SerializeField] private float duraci�nMovimiento;
+    [SerializeField] private float duraciónMovimiento;
 
     [Header("Colores")]
     [SerializeField] private Color colorCompleta;
@@ -16,17 +16,17 @@ public class ControladorAmarella : MonoBehaviour, InterfazJuego
     [SerializeField] private Color colorFinal;
 
     [Header("Referencias")]
-    [SerializeField] private GameObject[] prefabsObst�culo;
-    [SerializeField] private GameObject prefabPart�culasDa�oSuave;
-    [SerializeField] private GameObject prefabPart�culasDa�oFuerte;
+    [SerializeField] private GameObject[] prefabsObstáculo;
+    [SerializeField] private GameObject prefabPartículasDañoSuave;
+    [SerializeField] private GameObject prefabPartículasDañoFuerte;
     [SerializeField] private Transform centro;
     [SerializeField] private SpriteRenderer estadoVida;
 
     private ControladorJuegos controlador;
     [HideInInspector] public bool activo;
 
-    private List<ObstaculoAmarella> obst�culos;
-    private Vector2 posic�onInstanciaci�n;
+    private List<ObstaculoAmarella> obstáculos;
+    private Vector2 posicíonInstanciación;
     private Vector3 movimiento;
 
     private bool pensando;
@@ -37,7 +37,7 @@ public class ControladorAmarella : MonoBehaviour, InterfazJuego
     private void Start()
     {
         controlador = FindFirstObjectByType<ControladorJuegos>();
-        posic�onInstanciaci�n = new Vector2(0, 10);
+        posicíonInstanciación = new Vector2(0, 10);
         movimiento = new Vector2(0, -2);
 
         estadoVida.color = colorCompleta;
@@ -50,7 +50,7 @@ public class ControladorAmarella : MonoBehaviour, InterfazJuego
     private void Iniciar()
     {
         controlador.IniciarVidas(10);
-        obst�culos = new List<ObstaculoAmarella>();
+        obstáculos = new List<ObstaculoAmarella>();
         activo = true;
         puedeIrAtras = false;
 
@@ -105,10 +105,10 @@ public class ControladorAmarella : MonoBehaviour, InterfazJuego
 
     public void ReiniciarVisual()
     {
-        var obst�culos = FindObjectsByType<ObstaculoAmarella>(FindObjectsSortMode.None);
-        foreach (var obst�culo in obst�culos)
+        var obstáculos = FindObjectsByType<ObstaculoAmarella>(FindObjectsSortMode.None);
+        foreach (var obstáculo in obstáculos)
         {
-            Destroy(obst�culo.gameObject);
+            Destroy(obstáculo.gameObject);
         }
 
         estadoVida.color = colorCompleta;
@@ -128,11 +128,11 @@ public class ControladorAmarella : MonoBehaviour, InterfazJuego
     }
 
     // Juego
-    private void InstanciarObstaculo(Vector2 posici�n)
+    private void InstanciarObstaculo(Vector2 posición)
     {
-        var aleatorio = Random.Range(0, prefabsObst�culo.Length);
-        var nuevoObst�culo = Instantiate(prefabsObst�culo[aleatorio], posici�n, Quaternion.identity);
-        obst�culos.Add(nuevoObst�culo.GetComponent<ObstaculoAmarella>());
+        var aleatorio = Random.Range(0, prefabsObstáculo.Length);
+        var nuevoObstáculo = Instantiate(prefabsObstáculo[aleatorio], posición, Quaternion.identity);
+        obstáculos.Add(nuevoObstáculo.GetComponent<ObstaculoAmarella>());
     }
 
     private void Avanzar()
@@ -140,9 +140,9 @@ public class ControladorAmarella : MonoBehaviour, InterfazJuego
         ReiniciarEstado();
 
         // Mueve todos
-        for (int i = 0; i < obst�culos.Count; i++)
+        for (int i = 0; i < obstáculos.Count; i++)
         {
-            obst�culos[i].Actualizar(movimiento, duraci�nMovimiento);
+            obstáculos[i].Actualizar(movimiento, duraciónMovimiento);
         }
 
         // No instancia si viene de vuelta
@@ -157,13 +157,13 @@ public class ControladorAmarella : MonoBehaviour, InterfazJuego
         puedeIrAtras = true;
 
         // Instancia nuevo
-        InstanciarObstaculo(posic�onInstanciaci�n);
+        InstanciarObstaculo(posicíonInstanciación);
 
         // Borra no usados
-        if (obst�culos.Count > 12)
+        if (obstáculos.Count > 12)
         {
-            obst�culos.RemoveAt(0);
-            //Destroy(obst�culos[0].gameObject);
+            obstáculos.RemoveAt(0);
+            //Destroy(obstáculos[0].gameObject);
         }
     }
 
@@ -175,9 +175,9 @@ public class ControladorAmarella : MonoBehaviour, InterfazJuego
             return;
 
         // Mueve todos
-        for (int i = 0; i < obst�culos.Count; i++)
+        for (int i = 0; i < obstáculos.Count; i++)
         {
-            obst�culos[i].Actualizar(movimiento * -1, duraci�nMovimiento);
+            obstáculos[i].Actualizar(movimiento * -1, duraciónMovimiento);
         }
 
         puedeIrAtras = false;
@@ -190,21 +190,21 @@ public class ControladorAmarella : MonoBehaviour, InterfazJuego
         pensando = false;
     }
 
-    public void RestarVidas(TipoObst�culo tipoObst�culo)
+    public void RestarVidas(TipoObstáculo tipoObstáculo)
     {
-        switch (tipoObst�culo)
+        switch (tipoObstáculo)
         {
-            case TipoObst�culo.lento:
+            case TipoObstáculo.lento:
                 RestarVidas(1);
 
-                var suave = Instantiate(prefabPart�culasDa�oSuave, centro.position, Quaternion.identity);
+                var suave = Instantiate(prefabPartículasDañoSuave, centro.position, Quaternion.identity);
                 Destroy(suave, 1);
                 // sonido
                 break;
-            case TipoObst�culo.r�pido:
+            case TipoObstáculo.rápido:
                 RestarVidas(2);
 
-                var fuerte = Instantiate(prefabPart�culasDa�oFuerte, centro.position, Quaternion.identity);
+                var fuerte = Instantiate(prefabPartículasDañoFuerte, centro.position, Quaternion.identity);
                 Destroy(fuerte, 1);
                 // sonido
                 break;
